@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: engine-config
+data:
+  STREAM_KEY: "codesaga:events:code"
+  CONSUMER_GROUP: "india-1"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codesaga-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codesaga-engine
+  template:
+    metadata:
+      labels:
+        app: codesaga-engine
+    spec:
+      containers:
+      - name: engine
+        image: jamesnagar/codesaga-engine:2
+        envFrom:
+        - configMapRef:
+            name: engine-config
+        - secretRef:
+            name: engine-secrets
+        resources:
+          limits:
+            cpu: "900m"
+          requests:
+            cpu: "300m"

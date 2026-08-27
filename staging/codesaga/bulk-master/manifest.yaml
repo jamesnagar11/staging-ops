@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bulk-master-config
+data:
+  BULK_STREAM_KEY: "codesaga:events:db"
+  BULK_CONSUMER_GROUP: "india-1"
+  MIN_IDLE_TIME_MS: "60000"
+  BATCH_SIZE: "50"
+  MAX_RETRIES: "3"
+  SLEEP_INTERVAL_MS: "15000"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codesaga-bulk-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codesaga-bulk-master
+  template:
+    metadata:
+      labels:
+        app: codesaga-bulk-master
+    spec:
+      containers:
+      - name: bulk-master
+        image: jamesnagar/codesaga-cron:1
+        envFrom:
+        - configMapRef:
+            name: bulk-master-config
+        - secretRef:
+            name: bulk-master-secrets
+        resources:
+          limits:
+            cpu: "450m"
+          requests:
+            cpu: "250m"
+

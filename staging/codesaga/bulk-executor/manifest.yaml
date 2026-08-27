@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bulk-config
+data:
+  BULK_STREAM_KEY: "codesaga:events:db"
+  BULK_CONSUMER_GROUP: "india-1"
+  BULK_MAXLEN_APPROX: "10000"
+  BULK_CLAIM_MIN_IDLE_MS: "15000"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codesaga-bulk-executor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codesaga-bulk-executor
+  template:
+    metadata:
+      labels:
+        app: codesaga-bulk-executor
+    spec:
+      containers:
+      - name: bulk-executor
+        image: jamesnagar/codesaga-bulk:1
+        envFrom:
+        - configMapRef:
+            name: bulk-config
+        - secretRef:
+            name: bulk-secrets
+        resources:
+          limits:
+            cpu: "500m"
+          requests:
+            cpu: "250m"

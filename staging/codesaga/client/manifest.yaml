@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config
+data:
+  NEXTAUTH_URL: "https://codesaga.com"
+  SOCKET_BACKEND_URL: "https://codesaga.com"
+
+  NEXT_PUBLIC_PRESET_NAME: "cloudinary_preset_nextcode"
+  NEXT_PUBLIC_CLOUDINARY_NAME: "df0pvwrrl"
+  NEXT_PUBLIC_CLOUDINARY_BASE_URL: "https://api.cloudinary.com/v1_1/df0pvwrrl/image/upload"
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codesaga-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codesaga-client
+  template:
+    metadata:
+      labels:
+        app: codesaga-client
+    spec:
+      containers:
+      - name: client
+        image: jamesnagar/codesaga-client:5
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: client-config
+
+        volumeMounts: 
+          - name: codesaga-secret
+            mountPath: /usr/src/app/.env
+            subPath: .env
+            readOnly: true
+        resources:
+          limits:
+            cpu: "500m"
+          requests:
+            cpu: "250m"
+      
+      volumes:
+        - name: codesaga-secret
+          secret:
+            secretName: client-secrets
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: codesaga-client
+spec:
+  type: ClusterIP
+  selector:
+    app: codesaga-client
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

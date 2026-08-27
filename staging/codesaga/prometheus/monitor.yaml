@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: codesaga-ws
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - default
+
+  selector:
+    matchLabels:
+      app: codesaga-ws
+
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s

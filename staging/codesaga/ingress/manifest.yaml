@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: codesaga-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - codesaga.com
+    secretName: codesaga-tls
+  rules:
+  - host: codesaga.com
+    http:
+      paths:
+      - path: /socket.io
+        pathType: Prefix
+        backend:
+          service:
+            name: codesaga-ws
+            port:
+              number: 9090
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: codesaga-client
+            port:
+              number: 3000
