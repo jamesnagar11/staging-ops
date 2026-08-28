@@ -1,0 +1,28 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+
+metadata:
+  name: codesaga-engine-scaler
+  namespace: default
+
+spec:
+  scaleTargetRef:
+    name: codesaga-engine
+
+  minReplicaCount: 1
+  maxReplicaCount: 20
+
+  pollingInterval: 15
+  cooldownPeriod: 60
+
+  triggers:
+    - type: redis-streams
+      metadata:
+        address: valkey-1a6340eb-princenagarjamescoc-04cb.i.aivencloud.com:21031
+        stream: codesaga:events:code
+        consumerGroup: india-1
+        lagCount: "50"
+        activationLagCount: "0"
+
+      authenticationRef:
+        name: redis-keda-auth-triggerauth
