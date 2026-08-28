@@ -7,7 +7,7 @@ type: Opaque
 data:
   redis_username: "ZGVmYXVsdA=="
   redis_password: "QVZOU19ib1JVTXM4cHhVVE5hMTFjOHM1"
-  
+  tls: "ZW5hYmxl"
 
 ---
 
@@ -26,6 +26,7 @@ spec:
     - parameter: password
       name: redis-keda-auth
       key: redis_password
+      
     - parameter: tls
       name: redis-keda-auth
       key: tls
