@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: engine
-        image: jamesnagar/codesaga-engine:2
+        image: jamesnagar/codesaga-engine:b740d3a060560926222096eaf7a6d89fb20f0d43
         envFrom:
         - configMapRef:
             name: engine-config
