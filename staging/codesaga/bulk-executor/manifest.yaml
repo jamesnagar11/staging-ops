@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: bulk-executor
-        image: jamesnagar/codesaga-bulk:d138af391454d55622c9eb601b1f2c90b090d46c
+        image: jamesnagar/codesaga-bulk:c9021733b874af56bc255ce4e668603dd63423b9
         envFrom:
         - configMapRef:
             name: bulk-config
