@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: bulk-master
-        image: jamesnagar/codesaga-cron:0c9692fc2dabbc3134691cb829da5126100c8c60
+        image: jamesnagar/codesaga-cron:57e0f363e71bc491f732213676405aaf9c8b1378
         envFrom:
         - configMapRef:
             name: bulk-master-config
