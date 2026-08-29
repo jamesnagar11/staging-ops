@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: jamesnagar/codesaga-client:9e5303b68da7aa417ce4a6e314d0e80e86196d21
+        image: jamesnagar/codesaga-client:2f90e60698a19cbf2532fe0735d32318a8a2f7fd
         ports:
         - containerPort: 3000
         envFrom:
