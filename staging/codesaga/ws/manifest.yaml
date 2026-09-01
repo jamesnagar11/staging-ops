@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: ws
-        image: jamesnagar/codesaga-ws:025fb782914b78c7e91ddd84a2b817c9f5d25dca
+        image: jamesnagar/codesaga-ws:77d7b644dabaa1ef485baa5531f290daa269f6a1
         ports:
         - containerPort: 9090
         envFrom:
